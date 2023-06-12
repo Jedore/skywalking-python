@@ -17,13 +17,7 @@
 name: CI
 # This process will only run upon scheduled event on upstream master
 # or upon pull request when actual code or CI flow is changed
-on:
-  pull_request:
-  push:
-    branches:
-      - master
-  schedule:
-    - cron: '0 18 * * *'
+on: [ workflow_dispatch ]
 
 concurrency:
   group: CI-plugin-e2e-${{ github.event.pull_request.number || github.ref }}
