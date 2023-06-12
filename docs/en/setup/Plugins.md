@@ -33,6 +33,7 @@ or a limitation of SkyWalking auto-instrumentation (welcome to contribute!)
 | [kafka-python](https://kafka-python.readthedocs.io) | Python >=3.7 - ['2.0'];  | `sw_kafka` |
 | [loguru](https://pypi.org/project/loguru/) | Python >=3.7 - ['0.6.0', '0.7.0'];  | `sw_loguru` |
 | [mysqlclient](https://mysqlclient.readthedocs.io/) | Python >=3.7 - ['2.1.*'];  | `sw_mysqlclient` |
+| [neo4j](https://pypi.org/project/neo4j/) | Python <=3.9 - ['4.4.0', '4.4.1', '4.4.2', '4.4.3', '4.4.4', '4.4.5', '4.4.6', '4.4.7', '4.4.8']; Python <=3.10 - ['4.4.9', '5.0.*', '5.1.*', '5.2.*']; Python <=3.11 - ['4.4.10', '4.4.11', '5.3.*', '5.4.*', '5.5.*', '5.6.*', '5.7.*', '5.8.*', '5.9.*'];  | `sw_neo4j` |
 | [psycopg[binary]](https://www.psycopg.org/) | Python >=3.11 - ['3.1.*']; Python >=3.7 - ['3.0.18', '3.1.*'];  | `sw_psycopg` |
 | [psycopg2-binary](https://www.psycopg.org/) | Python >=3.10 - NOT SUPPORTED YET; Python >=3.7 - ['2.9'];  | `sw_psycopg2` |
 | [pymongo](https://pymongo.readthedocs.io) | Python >=3.7 - ['3.11.*'];  | `sw_pymongo` |
