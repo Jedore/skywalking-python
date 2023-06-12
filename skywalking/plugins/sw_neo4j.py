@@ -25,7 +25,9 @@ from skywalking.trace.tags import TagDbType, TagDbInstance, TagDbStatement, \
 link_vector = ['https://pypi.org/project/neo4j/']
 support_matrix = {
     'neo4j': {
-        '>=3.7': ['5.8.*', '5.9.*']
+        '<=3.9': ['4.4.0', '4.4.1', '4.4.2', '4.4.3', '4.4.4', '4.4.5', '4.4.6', '4.4.7', '4.4.8'],
+        '<=3.10': ['4.4.9', '5.0.*', '5.1.*', '5.2.*'],
+        '<=3.11': ['4.4.10', '4.4.11', '5.3.*', '5.4.*', '5.5.*', '5.6.*', '5.7.*', '5.8.*', '5.9.*'],
     }
 }
 note = """"""
@@ -48,20 +50,19 @@ def install():
                 parameter) > max_len else parameter
             span.tag(TagDbSqlParameters(f'[{parameter}]'))
 
+    def get_peer(address):
+        return f'{address.host}:{address.port}'
+
     def _sw_session_run(self, query, parameters, **kwargs):
-        peer = f'{self._pool.address.host}:{self._pool.address.port}'
         with get_context().new_exit_span(op='Neo4j/Session/run',
-                                         peer=peer,
+                                         peer=get_peer(self._pool.address),
                                          component=Component.Neo4j) as span:
-            _archive_span(span, self._config.database, query, parameters,
-                          **kwargs)
+            _archive_span(span, self._config.database, query, parameters, **kwargs)
             return _session_run(self, query, parameters, **kwargs)
 
     def _sw_transaction_run(self, query, parameters=None, **kwargs):
-        addr = self._connection.unresolved_address
-        peer = f'{addr.host}:{addr.port}'
         with get_context().new_exit_span(op='Neo4j/Transaction/run',
-                                         peer=peer,
+                                         peer=get_peer(self._connection.unresolved_address),
                                          component=Component.Neo4j) as span:
             database = self._connection.pool.workspace_config.database
             _archive_span(span, database, query, parameters, **kwargs)
@@ -87,24 +88,18 @@ def install():
         _async_transaction_run = AsyncTransactionBase.run
 
         async def _sw_async_session_run(self, query, parameters, **kwargs):
-            peer = f'{self._pool.address.host}:{self._pool.address.port}'
             with get_context().new_exit_span(op='Neo4j/AsyncSession/run',
-                                             peer=peer,
+                                             peer=get_peer(self._pool.address),
                                              component=Component.Neo4j) as span:
-                _archive_span(span, self._config.database, query, parameters,
-                              **kwargs)
+                _archive_span(span, self._config.database, query, parameters, **kwargs)
             return await _async_session_run(self, query, parameters, **kwargs)
 
         async def _sw_async_transaction_run(self, query, parameters, **kwargs):
-            addr = self._connection.unresolved_address
-            peer = f'{addr.host}:{addr.port}'
             with get_context().new_exit_span(op='Neo4j/AsyncTransaction/run',
-                                             peer=peer,
+                                             peer=get_peer(self._connection.unresolved_address),
                                              component=Component.Neo4j) as span:
-                _archive_span(span, self._database, query, parameters,
-                              **kwargs)
-                return await _async_transaction_run(self, query, parameters,
-                                                    **kwargs)
+                _archive_span(span, self._database, query, parameters, **kwargs)
+                return await _async_transaction_run(self, query, parameters, **kwargs)
 
         Session.run = _sw_session_run
         AsyncSession.run = _sw_async_session_run
