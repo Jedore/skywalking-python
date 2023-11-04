@@ -1,12 +1,18 @@
 ## Change Logs
 
 ### 1.1.0
+
+- Feature:
+  - Users now can specify the `SW_AGENT_ASYNCIO_ENHANCEMENT` environment variable to enable the performance enhancement with asyncio (#316)
+  - Support printing Trace IDs (TID) to collected application logs (#323)
+
 - Plugins:
   - Add neo4j plugin.(#312)
 
 - Fixes:
   - Fix unexpected 'No active span' IllegalStateError (#311)
- 
+  - **Tentative**: Set upper bound <=5.9.5 for psutil package due to test failure. (#326)
+
 ### 1.0.1
 
 - Feature:
